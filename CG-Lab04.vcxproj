@@ -138,7 +138,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Hyperboloid.cpp" />
+    <ClCompile Include="Cone.cpp" />
+    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Paraboloid.cpp" />
+    <ClCompile Include="Pyramid.cpp" />
+    <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="Textures.cpp" />
+    <ClCompile Include="Torus.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Shape.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
