@@ -28,7 +28,7 @@ void loadTexture(GLuint* texture, const char* path) {
 }
 
 bool LoadGLTextures() {
-	std::cout << get_working_path() << std::endl;
+	// std::cout << get_working_path() << std::endl;
 	loadTexture(&texture[0], "asset/wall.jpeg");
 	if (texture[0] == 0) {
 		return false;

@@ -23,7 +23,7 @@ void initGL() {
 	glDepthFunc(GL_LEQUAL); // Set the type of depth-test
 	glShadeModel(GL_SMOOTH); // Enable smooth shading
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // Nice perspective corrections
-	std::cout << LoadGLTextures(); // Load textures
+	LoadGLTextures(); // Load textures
 }
 
 /* Handler for window-repaint event. Called back when the window first appears and

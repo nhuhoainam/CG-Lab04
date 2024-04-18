@@ -8,41 +8,38 @@ void drawTorus(GLfloat innerRadius, GLfloat outerRadius, GLint sides, GLint ring
 	// glEnable(GL_BLEND);
 	// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	glBegin(GL_QUADS); // Begin drawing the torus
-	for (int i = 0; i < sides; i++) {
-		for (int j = 0; j < rings; j++) {
-			for (int k = 0; k < 2; k++) {
-				for (int l = 0; l < 2; l++) {
-					GLfloat theta = (2.0f * M_PI * i) / sides;
-					GLfloat phi = (2.0f * M_PI * j) / rings;
-					GLfloat theta2 = (2.0f * M_PI * (i + 1)) / sides;
-					GLfloat phi2 = (2.0f * M_PI * (j + 1)) / rings;
+    int uSteps = sides, vSteps = rings;
 
-					GLfloat x1 = (outerRadius + innerRadius * cos(phi)) * cos(theta);
-					GLfloat y1 = (outerRadius + innerRadius * cos(phi)) * sin(theta);
-					GLfloat z1 = innerRadius * sin(phi);
+	// Radii of the torus
+	GLdouble R2 = (outerRadius - innerRadius) / 2;
+	GLdouble R1 = R2 + innerRadius;
 
-					GLfloat x2 = (outerRadius + innerRadius * cos(phi2)) * cos(theta);
-					GLfloat y2 = (outerRadius + innerRadius * cos(phi2)) * sin(theta);
-					GLfloat z2 = innerRadius * sin(phi2);
+	// Range for the parameters
+    GLdouble uMin = 0.0, uMax = 2.0 * M_PI;
+    GLdouble vMin = 0.0, vMax = 2.0 * M_PI;
 
-					GLfloat x3 = (outerRadius + innerRadius * cos(phi2)) * cos(theta2);
-					GLfloat y3 = (outerRadius + innerRadius * cos(phi2)) * sin(theta2);
-					GLfloat z3 = innerRadius * sin(phi2);
-
-					GLfloat x4 = (outerRadius + innerRadius * cos(phi)) * cos(theta2);
-					GLfloat y4 = (outerRadius + innerRadius * cos(phi)) * sin(theta2);
-					GLfloat z4 = innerRadius * sin(phi);
-
-					glTexCoord2f(0.0f, 0.0f); glVertex3f(x1, y1, z1);
-					glTexCoord2f(1.0f, 0.0f); glVertex3f(x2, y2, z2);
-					glTexCoord2f(1.0f, 1.0f); glVertex3f(x3, y3, z3);
-					glTexCoord2f(0.0f, 1.0f); glVertex3f(x4, y4, z4);
-				}
-			}
-		}
-	}
-	glEnd(); // End of drawing the torus
+    glBegin(GL_QUADS);
+    // draw the torus
+    for (int i = 0; i < uSteps; ++i) {
+        for (int j = 0; j < vSteps; ++j) {
+            // Compute the four corners of the quad
+            GLdouble u0 = uMin + i * (uMax - uMin) / uSteps;
+            GLdouble u1 = uMin + (i + 1) * (uMax - uMin) / uSteps;
+            GLdouble v0 = vMin + j * (vMax - vMin) / vSteps;
+            GLdouble v1 = vMin + (j + 1) * (vMax - vMin) / vSteps;
+            // Compute the coordinates of the four corners
+            GLdouble x0 = (R1 + R2 * cos(v0)) * cos(u0), y0 = (R1 + R2 * cos(v0)) * sin(u0), z0 = R2 * sin(v0);
+            GLdouble x1 = (R1 + R2 * cos(v1)) * cos(u0), y1 = (R1 + R2 * cos(v1)) * sin(u0), z1 = R2 * sin(v1);
+            GLdouble x2 = (R1 + R2 * cos(v1)) * cos(u1), y2 = (R1 + R2 * cos(v1)) * sin(u1), z2 = R2 * sin(v1);
+            GLdouble x3 = (R1 + R2 * cos(v0)) * cos(u1), y3 = (R1 + R2 * cos(v0)) * sin(u1), z3 = R2 * sin(v0);
+            // Draw the quad
+            glTexCoord2f((float)i / uSteps, (float)j / vSteps); glVertex3f(x0, y0, z0);
+            glTexCoord2f((float)(i + 1) / uSteps, (float)j / vSteps); glVertex3f(x1, y1, z1);
+            glTexCoord2f((float)(i + 1) / uSteps, (float)(j + 1) / vSteps); glVertex3f(x2, y2, z2);
+            glTexCoord2f((float)i / uSteps, (float)(j + 1) / vSteps); glVertex3f(x3, y3, z3);
+        }
+    }
+    glEnd();
 
 	// glDisable(GL_BLEND);
 	glDisable(GL_TEXTURE_2D);
